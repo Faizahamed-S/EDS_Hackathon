@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body, html {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+* { 
+  box-sizing: border-box;
+}
+
+.bg-img {
+  background-image: url("static/homepage.jpg"); /* Replace with your image path */
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.container {
+  position: absolute;
+  right: 0;
+  margin: 20px;
+  max-width: 300px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+input[type="email"], input[type="password"] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px; /* Add some space at the bottom */
+  font-size: 16px; /* Set a standard font size */
+}
+
+.btn:hover {
+  opacity: 1;
+}
+
+.inline-links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px; /* Spacing from the login button */
+}
+
+.inline-links a {
+  width: 48%; /* Half width minus a bit for margin */
+  padding: 16px 20px;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 16px; /* Set a standard font size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 52px; /* Set a fixed height for the buttons */
+}
+
+.inline-links a:hover {
+  background-color: #367c39;
+}
+
+/* New styles for the multi-color heading */
+.multi-color-heading {
+  font-size: 36px; /* Adjust the size as needed */
+  font-family: 'Arial', sans-serif; /* The font family for the heading */
+  text-align: center; /* Center the text */
+  background-color: #f0f0f0; /* A light background color for the heading */
+  border-radius: 10px; /* Rounded corners for the background */
+  display: inline-block; /* Allows the background to fit to the content */
+  padding: 10px 20px; /* Padding around the text */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* A subtle shadow for depth */
+  margin-bottom: 20px; /* Space before the form */
+}
+
+/* Color classes for individual letters */
+.c1 { color: #3498db; }
+.c2 { color: #2ecc71; }
+.c3 { color: #f1c40f; }
+.c4 { color: #e74c3c; }
+.c5 { color: #9b59b6; }
+
+</style>
+</head>
+<body>
+
+<div class="bg-img">
+  <div class="container">
+    <!-- Updated heading with background -->
+    <div class="multi-color-heading">
+      <span class="c1">K</span>
+      <span class="c2">a</span>
+      <span class="c3">i</span>
+      <span class="c4">z</span>
+      <span class="c5">e</span>
+      <span class="c1">n</span>
+      <br> <!-- Line break to split into two lines -->
+      <span class="c2">C</span>
+      <span class="c3">h</span>
+      <span class="c4">a</span>
+      <span class="c5">t</span>
+      <span class="c1">b</span>
+      <span class="c2">o</span>
+      <span class="c3">t</span>
+    </div>
+
+   <!-- Login form -->
+<form action="/login" method="post" class="login-form">
+  <label for="email"><b>Email</b></label>
+  <input type="email" placeholder="Enter Email" name="email" required>
+
+  <label for="password"><b>Password</b></label>
+  <input type="password" placeholder="Enter Password" name="password" required>
+
+  <button type="submit" class="btn">Login</button>
+  
+  <!-- Inline link buttons for forgot password and signup -->
+  <div class="inline-links">
+    <a href="forgotpassword">Forgot password?</a>
+    <a href="signup">Signup</a>
+  </div>
+</form>
+  </div>
+</div>
+
+</body>
+<script>
+function login() {
+    var email = document.getElementById("email").value;
+    var password = document.getElementById("password").value;
+
+    fetch('/api/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email, password: password }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.id) {
+            console.log('Login Successful:', data);
+            // Redirect to dashboard or appropriate page
+        } else {
+            console.log('Login Failed:', data);
+            // Show error message
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+</script>
+
+</html>

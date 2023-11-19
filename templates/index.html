@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Deloitte Tax Bot</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e8eff1;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            color: #005a9c;
+            text-align: center;
+        }
+        #signoutButton {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #signoutButton:hover {
+            background-color: #d32f2f;
+        }
+
+        #chatWindow {
+            border: 2px solid #005a9c;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff;
+            height: 300px;
+            overflow-y: auto;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        #userMessage {
+            width: 70%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 20%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <button id="signoutButton" onclick="window.location.href='/signout'">Sign Out</button>
+    <h1>Deloitte Tax Chat Bot</h1>
+    <div id="chatWindow">
+    </div>
+
+    <input type="text" id="userMessage" placeholder="Type your message..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        function sendMessage() {
+            const userMessage = document.getElementById("userMessage").value;
+            fetch("/api/chat", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text: userMessage })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById("chatWindow").innerHTML += "<div><strong>You:</strong> " + userMessage + "</div>";
+                document.getElementById("chatWindow").innerHTML += "<div><strong>Bot:</strong> " + data.text + "</div>";
+                document.getElementById("userMessage").value = "";
+            })
+            .catch(error => {
+                document.getElementById("chatWindow").innerHTML += "<div><strong>Bot:</strong> Sorry, there was an error processing your request.</div>";
+            });
+        }
+        if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+            console.log("Page reloaded. Redirecting to logout.");
+            window.location.href = '/login';  // Redirect to the logout route
+        }
+    </script>
+</body>
+</html>
